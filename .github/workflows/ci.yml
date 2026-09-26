@@ -30,19 +30,19 @@ jobs:
     needs: build-backend
     runs-on: ubuntu-latest
     services:
-      postgres:
+      db:
         image: postgres:16-alpine
         env:
-          POSTGRES_DB: appdb
-          POSTGRES_USER: appuser
-          POSTGRES_PASSWORD: senha123
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 5
+          --health-cmd="pg_isready -U ${{ secrets.POSTGRES_USER }}"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -51,12 +51,15 @@ jobs:
           cache: 'pip'
           cache-dependency-path: backend/requirements.txt
       - run: pip install -r backend/requirements.txt
-      - run: python manage.py test
+      - name: Run python manage.py test
         working-directory: backend
         env:
-          POSTGRES_DB: appdb
-          POSTGRES_USER: appuser
-          POSTGRES_PASSWORD: senha123
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+        run: python manage.py test
 
   lint-frontend:
     runs-on: ubuntu-latest
