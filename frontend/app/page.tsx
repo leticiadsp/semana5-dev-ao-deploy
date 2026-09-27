@@ -11,8 +11,9 @@ export default function Home() {
   const [data, setData] = useState<HealthResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
   useEffect(() => {
-    fetch("http://localhost:8000/api/health/")
+    fetch(`${apiUrl}/health/`)
       .then((response) => response.json())
       .then((json) => {
         setData(json);
