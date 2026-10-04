@@ -8,3 +8,5 @@ venv
 firebase-debug.log
 .firebase/
 *service-account*.json
+firestore-debug.log
+ui-debug.log

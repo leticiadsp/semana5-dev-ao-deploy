@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { buscarDados } from "../lib/dataSource";
 
 type HealthResponse = {
   status: string;
@@ -13,8 +14,7 @@ export default function Home() {
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
   useEffect(() => {
-    fetch(`${apiUrl}/health/`)
-      .then((response) => response.json())
+    buscarDados(apiUrl)
       .then((json) => {
         setData(json);
       })
