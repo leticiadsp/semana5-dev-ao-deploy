@@ -201,4 +201,6 @@ jobs:
           projectId: leticia-semana06
           channelId: ${{ github.event_name == 'push' && 'live' || '' }}
       - name: Teste de fumaca
-        run: curl --fail --silent --show-error --output /dev/null "${{ steps.deploy.outputs.details_url }}"          
+        env:
+          URL_PUBLICADA: ${{ github.event_name == 'push' && 'https://leticia-semana06.web.app' || steps.deploy.outputs.details_url }}
+        run: curl --fail --silent --show-error --output /dev/null "$URL_PUBLICADA"               
