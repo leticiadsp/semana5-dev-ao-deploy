@@ -34,7 +34,7 @@ export default function Home() {
 
   return (
     <main style={{ padding: 40 }}>
-      <h1>Status: {data.status}</h1>
+      <h1>Versao B - Status: {data.status}</h1>
       <ul>
         {data.items.map((item, index) => (
           <li key={index}>{item}</li>
